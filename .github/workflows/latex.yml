@@ -10,7 +10,14 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: main.tex
-      - name: Upload main.pdf
-        uses: actions/upload-artifact@v2
+      - name: Commit main.pdf
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add main.pdf
+          git commit -m "update compiled pdf"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          path: main.pdf
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
